@@ -32,6 +32,7 @@ void reverse(){
         temp = k;
     }
     head = prev;
+    
 }
 
 void insertatbegin(int data){

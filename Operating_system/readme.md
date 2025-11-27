@@ -1,10 +1,11 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-using namespace std;
+# Scheduling Algorithms in Operating Systems
+## First-Come, First-Served (FCFS)
+The First-Come, First-Served (FCFS) scheduling algorithm is the simplest type
+    of CPU scheduling algorithm. In this method, the process that arrives first is executed first. It operates on a queue basis, where processes are lined up in the order they arrive.
+### Code
+```cpp
 
 void First_Come_First_Served(vector<vector<int>> & p ){
-    // p = {arrival_time, burst_time}
     vector<string> ghantt_chart;
         for(int i=0;i<p.size();i++){
             string a ="P"+to_string(i+1);
@@ -40,9 +41,40 @@ void First_Come_First_Served(vector<vector<int>> & p ){
         cout<<i+1<<"\t"<<p[i][0]<<"\t\t"<<p[i][1]<<"\t\t"<<ct[i]<<"\t\t"<<tat[i]<<"\t\t\t"<<wt[i]<<"\n";
     }
     cout<<"Average Turn Around Time: "<<(float)avg_tat/n<<"\n";
-    cout<<"Average Waiting Time: "<<(float)avg_wt/n<<"\n";
-    
+    cout<<"Average Waiting Time: "<<(float)avg_wt/n<<"\n";   
 }
+int main(){
+    vector<vector<int>> processes = {
+        {0,2},{0,4},{0,6},{0,1},{0,3}
+        // {6, 6}, {2, 2}, {8,8}, {3, 3},{4,4}
+        // {1, 4,2}, {2,6,6}, {3,3,4}, {4,7,6},{5,2,7}
+        // {1, 4, 4, 2}, {2, 2, 6, 4}, {3, 16, 3, 3}, {4, 3, 9, 1}, {5, 4, 2, 5}
+        // {1, 4, 4}, {2, 2, 9}, {3, 0, 6}, {4, 6, 3}
+    };
+    First_Come_First_Served(processes);
+    // sortest_Job_first_non_preemptive(processes);
+    // sjf_preemptive(processes);
+    // Priority_Scheduling_preemptive(processes);
+    // Round_robin_scheduling(processes, 3);
+}
+```
+### OUTPUT
+```cpp
+Ghannt Chart:
+ | P1  | P2  | P3  | P4  | P5 |
+Process Arrival Time    Burst Time      Completion Time Turn Around Time        Waiting Time
+1       0               2               2               2                       0      
+2       0               4               6               6                       2      
+3       0               6               12              12                      6      
+4       0               1               13              13                      12     
+5       0               3               16              16                      13     
+Average Turn Around Time: 9.8
+Average Waiting Time: 6.6
+```
+## Shortest Job First (SJF) Non-Preemptive
+The Shortest Job First (SJF) Non-Preemptive scheduling algorithm selects the process with the smallest burst time from the set of processes that have arrived and are ready to execute. Once a process starts executing, it runs to completion without being interrupted.
+### Code
+```cpp
 
 void sortest_Job_first_non_preemptive(vector<vector<int>> & p ){
     // p = {arrival_time, burst_time}
@@ -99,6 +131,38 @@ void sortest_Job_first_non_preemptive(vector<vector<int>> & p ){
     cout<<"Average Turn Around Time: "<<(float)avg_tat/n<<"\n";
     cout<<"Average Waiting Time: "<<(float)avg_wt/n<<"\n";
 }
+int main(){
+    vector<vector<int>> processes = {
+        // {0,2},{0,4},{0,6},{0,1},{0,3}
+        {6, 6}, {2, 2}, {8,8}, {3, 3},{4,4}
+        // {1, 4,2}, {2,6,6}, {3,3,4}, {4,7,6},{5,2,7}
+        // {1, 4, 4, 2}, {2, 2, 6, 4}, {3, 16, 3, 3}, {4, 3, 9, 1}, {5, 4, 2, 5}
+        // {1, 4, 4}, {2, 2, 9}, {3, 0, 6}, {4, 6, 3}
+    };
+    // First_Come_First_Served(processes);
+    sortest_Job_first_non_preemptive(processes);
+    // sjf_preemptive(processes);
+    // Priority_Scheduling_preemptive(processes);
+    // Round_robin_scheduling(processes, 3);
+}
+```
+### OUTPUT
+```cpp
+Ghannt Chart: 
+ | P2  | P4  | P5  | P1  | P3 | 
+Process Arrival Time    Burst Time      Completion Time Turn Around Time        Waiting Time
+1       2               2               4               2                       0
+2       3               3               7               4                       1
+3       4               4               11              7                       3
+4       6               6               17              11                      5
+5       8               8               25              17                      9
+Average Turn Around Time: 8.2
+Average Waiting Time: 3.6
+```
+## Shortest Job First (SJF) Preemptive
+The Shortest Job First (SJF) Preemptive scheduling algorithm, also known as Shortest Remaining Time First (SRTF), selects the process with the smallest remaining burst time from the set of processes that have arrived and are ready to execute. If a new process arrives with a burst time less than the remaining time of the currently executing process, the current process is preempted, and the new process is executed.
+### Code
+```cpp
 
 void sjf_preemptive(vector<vector<int>>&p){
     // p = {process no, arrival_time, burst_time}
@@ -178,8 +242,38 @@ void sjf_preemptive(vector<vector<int>>&p){
     cout<<"Average Waiting Time: "<<(float)avg_wt/n<<"\n";
 
 }
-
-// Priority Scheduling non Preemptive is similar to first come first served only difference is we have to sort based on priority instead of arrival time
+int main(){
+    vector<vector<int>> processes = {
+        // {0,2},{0,4},{0,6},{0,1},{0,3}
+        // {6, 6}, {2, 2}, {8,8}, {3, 3},{4,4}
+        {1, 4,2}, {2,6,6}, {3,3,4}, {4,7,6},{5,2,7}
+        // {1, 4, 4, 2}, {2, 2, 6, 4}, {3, 16, 3, 3}, {4, 3, 9, 1}, {5, 4, 2, 5}
+        // {1, 4, 4}, {2, 2, 9}, {3, 0, 6}, {4, 6, 3}
+    };
+    // First_Come_First_Served(processes);
+    // sortest_Job_first_non_preemptive(processes);
+    sjf_preemptive(processes);
+    // Priority_Scheduling_preemptive(processes);
+    // Round_robin_scheduling(processes, 3);
+}
+```
+### OUTPUT
+```cpp
+Ghannt Chart: 
+P5 P3 P1 P3 P5 P2 P4 
+Process Arrival Time    Burst Time      Completion Time Turn Around Time        Waiting Time
+5       2               7               15              13                      6
+3       3               4               9               6                       2
+1       4               2               6               2                       0
+2       6               6               21              15                      9
+4       7               6               27              20                      14
+Average Turn Around Time: 11.2
+Average Waiting Time: 6.2
+```
+## Priority Scheduling Preemptive
+The Priority Scheduling Preemptive algorithm selects the process with the highest priority (lowest numerical value) from the set of processes that have arrived and are ready to execute. If a new process arrives with a higher priority than the currently executing process, the current process is preempted, and the new process is executed.
+### Code
+```cpp
 
 void Priority_Scheduling_preemptive(vector<vector<int>> & p ){
     // p = {proccess no, arrival_time, burst_time, priority}
@@ -251,6 +345,37 @@ void Priority_Scheduling_preemptive(vector<vector<int>> & p ){
     cout<<"Average Turn Around Time: "<<(float)avg_tat/n<<"\n";
     cout<<"Average Waiting Time: "<<(float)avg_wt/n<<"\n";
 }
+int main(){
+    vector<vector<int>> processes = {
+        // {0,2},{0,4},{0,6},{0,1},{0,3}
+        // {6, 6}, {2, 2}, {8,8}, {3, 3},{4,4}
+        // {1, 4,2}, {2,6,6}, {3,3,4}, {4,7,6},{5,2,7}
+        {1, 4, 4, 2}, {2, 2, 6, 4}, {3, 16, 3, 3}, {4, 3, 9, 1}, {5, 4, 2, 5}
+        // {1, 4, 4}, {2, 2, 9}, {3, 0, 6}, {4, 6, 3}
+    };
+    // First_Come_First_Served(processes);
+    // sortest_Job_first_non_preemptive(processes);
+    // sjf_preemptive(processes);
+    Priority_Scheduling_preemptive(processes);
+    // Round_robin_scheduling(processes, 3);
+}```
+### OUTPUT
+```cpp
+Ghannt Chart: 
+P2 P4 P1 P3 P2 P5
+Process Arrival Time    Burst Time      Completion Time Turn Around Time        Waiting Time
+2       2               6               24              22                      16     
+4       3               9               12              9                       0      
+1       4               4               16              12                      8      
+5       4               2               26              22                      20     
+3       16              3               19              3                       0      
+Average Turn Around Time: 13.6
+Average Waiting Time: 8.8
+```
+## Round Robin Scheduling
+The Round Robin scheduling algorithm assigns a fixed time quantum to each process in the ready queue. Each process is executed for a time slice equal to the time quantum. If a process does not complete within its time slice, it is preempted and placed at the end of the ready queue, allowing the next process to execute.
+### Code
+```cpp
 
 void Round_robin_scheduling(vector<vector<int>> & p, int time_quantum ){
     // p = {process no, arrival_time, burst_time}
@@ -344,3 +469,17 @@ int main(){
     // Priority_Scheduling_preemptive(processes);
     Round_robin_scheduling(processes, 3);
 }
+```
+### OUTPUT
+```cpp
+Ghannt Chart: 
+P3 P2 P3 P1 P4 P2 P1 P2
+Process Arrival Time    Burst Time      Completion Time Turn Around Time        Waiting Time
+3       0               6               9               9                       3      
+2       2               9               22              20                      11     
+1       4               4               19              15                      11     
+4       6               3               15              9                       6      
+Average Turn Around Time: 13.25
+Average Waiting Time: 7.75
+```
+

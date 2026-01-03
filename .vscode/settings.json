@@ -1,5 +1,19 @@
 {
-    "files.exclude": {"**/*.exe": true},
+    "files.exclude": {
+        "**/.git": false,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/*.exe": true,
+        ".vscode": true,
+        ".vscode/**": true,
+        ".vscode0": true,
+        ".vscode0/**": true,
+        ".git": true,
+        ".git/**": true,
+        ".hidden-items.json": true
+    },
     "search.exclude": {
         "**/*.exe": true
     },

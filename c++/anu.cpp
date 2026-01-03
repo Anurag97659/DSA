@@ -1,30 +1,28 @@
 #include<iostream>
 #include<algorithm>
 #include<vector>
+#include<string>
 using namespace std;
-
-void _01_knapsack(int W, vector<int>& wt, vector<int>& val, int n) {
-    vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));
-
-    for (int i = 1; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
-            if (wt[i - 1] <= w) {
-                dp[i][w] = max(dp[i - 1][w], val[i - 1] + dp[i - 1][w - wt[i - 1]]);
-            } else {
-                dp[i][w] = dp[i - 1][w];
-            }
-        }
+struct student{
+    int roll;
+    string name;
+    string course;
+    int age;   
+};
+int main(){
+    vector<student> v;
+    for(int i=0;i<5;i++){
+        string name,course;
+        int roll,age;
+        roll = rand()%100;
+        name = "Student" + to_string(i+1);
+        course = "Course" + to_string((i%3)+1);
+        age = 18 + rand()%5;
+        student s = {roll, name, course, age};
+        v.push_back(s); 
+    }
+    for(auto i:v){
+        cout<<"Roll: "<<i.roll<<", Name: "<<i.name<<", Course: "<<i.course<<", Age: "<<i.age<<endl;
     }
 
-    cout << "Maximum value in Knapsack = " << dp[n][W] << endl;
-}
-int main() {
-    int W = 50; // Maximum weight of knapsack
-    vector<int> wt = {10, 20, 30}; // Weights of items
-    vector<int> val = {60, 100, 120}; // Values of items
-    int n = wt.size(); // Number of items
-
-    _01_knapsack(W, wt, val, n);
-
-    return 0;
 }

@@ -4,3 +4,9 @@
 *.hidden-items.json
 *.vscode
 *.vscode0()
+# Ignore VS Code folders at repo root
+.vscode/
+.vscode0/
+
+# Ignore all PDB files inside rust_Project/src
+rust_Project/src/**/*.pdb
